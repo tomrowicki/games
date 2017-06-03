@@ -2,6 +2,7 @@ package wyrazomania.model.tile;
 
 public abstract class Tile
 {
+    // FIXME zamiast tego obiekt Field z koordynatami i bonusem
     private Integer xCoordinate = null;
     
     private Integer yCoordinate = null;
