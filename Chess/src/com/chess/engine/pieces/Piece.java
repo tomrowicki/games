@@ -8,13 +8,23 @@ import com.chess.engine.board.Move;
 
 public abstract class Piece
 {
-    protected final int position;
+    protected final int piecePosition;
 
     protected final Alliance pieceAlliance;
 
+    public int getPiecePosition()
+    {
+        return piecePosition;
+    }
+
+    public Alliance getPieceAlliance()
+    {
+        return pieceAlliance;
+    }
+
     Piece( final int piecePosition, final Alliance pieceAlliance )
     {
-        this.position = piecePosition;
+        this.piecePosition = piecePosition;
         this.pieceAlliance = pieceAlliance;
     }
 
