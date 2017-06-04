@@ -8,6 +8,8 @@ import com.chess.engine.Alliance;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
+import com.chess.engine.board.Move.MajorMove;
+import com.chess.engine.board.Move.MajorMove.AttackMove;
 import com.chess.engine.board.Tile;
 import com.google.common.collect.ImmutableList;
 
@@ -22,7 +24,7 @@ public class Knight
     }
 
     @Override
-    public Collection<Move> calculateLegalMoves( Board board )
+    public Collection<Move> calculateLegalMoves( final Board board )
     {
         final List<Move> legalMoves = new ArrayList<Move>();
 
@@ -44,7 +46,7 @@ public class Knight
 
                 if ( !candidateDestinationTile.isTileOccupied() )
                 {
-                    legalMoves.add( new Move() );
+                    legalMoves.add( new MajorMove( board, this, candidateDestinationCoordinate ) );
                 }
                 else
                 {
@@ -53,7 +55,8 @@ public class Knight
 
                     if ( this.pieceAlliance != pieceAlliance )
                     {
-                        legalMoves.add( new Move() );
+                        legalMoves
+                            .add( new AttackMove( board, this, candidateDestinationCoordinate, pieceAtDestination ) );
                     }
                 }
             }
