@@ -8,11 +8,12 @@ import com.chess.engine.Alliance;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
+import com.google.common.collect.ImmutableList;
 
 public class Pawn
     extends Piece
 {
-    private static int[] CANDIDATE_MOVE_COORDINATES = { 8, 16 };
+    private static int[] CANDIDATE_MOVE_COORDINATES = { 8, 16, 7, 9 };
 
     Pawn( final int piecePosition, final Alliance pieceAlliance )
     {
@@ -51,9 +52,35 @@ public class Pawn
                     legalMoves.add( new Move.MajorMove( board, this, candidateDestinationCoordinate ) );
                 }
             }
+            else if ( currentCandidateOffset == 7 &&
+                !( ( BoardUtils.EIGHTH_COLUMN[this.piecePosition] && this.pieceAlliance.isWhite() )
+                    || ( BoardUtils.FIRST_COLUMN[this.piecePosition] && this.pieceAlliance.isBlack() ) ) )
+            {
+                if ( board.getTile( candidateDestinationCoordinate ).isTileOccupied() )
+                {
+                    final Piece pieceOnCandiate = board.getTile( candidateDestinationCoordinate ).getPiece();
+                    if ( this.pieceAlliance != pieceOnCandiate.getPieceAlliance() )
+                    {
+                        legalMoves.add( new Move.MajorMove( board, this, candidateDestinationCoordinate ) );
+                    }
+                }
+            }
+            else if ( currentCandidateOffset == 9 &&
+                ( ( BoardUtils.FIRST_COLUMN[this.piecePosition] && this.pieceAlliance.isWhite() )
+                    || ( BoardUtils.EIGHTH_COLUMN[this.piecePosition] && this.pieceAlliance.isBlack() ) ) )
+            {
+                if ( board.getTile( candidateDestinationCoordinate ).isTileOccupied() )
+                {
+                    final Piece pieceOnCandiate = board.getTile( candidateDestinationCoordinate ).getPiece();
+                    if ( this.pieceAlliance != pieceOnCandiate.getPieceAlliance() )
+                    {
+                        legalMoves.add( new Move.MajorMove( board, this, candidateDestinationCoordinate ) );
+                    }
+                }
+            }
         }
 
-        return legalMoves;
+        return ImmutableList.copyOf( legalMoves );
     }
 
 }
