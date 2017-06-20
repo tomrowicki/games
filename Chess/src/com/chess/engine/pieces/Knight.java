@@ -18,7 +18,7 @@ public class Knight
 {
     private static final int[] CANDIDATE_MOVE_COORDINATES = { -17, -15, -10, -6, 6, 10, 15, 17 };
 
-    Knight( int piecePosition, Alliance pieceAlliance )
+    public Knight( int piecePosition, Alliance pieceAlliance )
     {
         super( piecePosition, pieceAlliance );
     }

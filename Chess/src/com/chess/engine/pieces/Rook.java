@@ -19,7 +19,7 @@ public class Rook
 
     private final static int[] CANDIDATE_MOVE_VECTOR_COORDINATES = { -8, -1, 1, 8 };
 
-    Rook( int piecePosition, Alliance pieceAlliance )
+    public Rook( int piecePosition, Alliance pieceAlliance )
     {
         super( piecePosition, pieceAlliance );
     }
