@@ -20,7 +20,7 @@ public class Knight
 
     public Knight( int piecePosition, Alliance pieceAlliance )
     {
-        super( piecePosition, pieceAlliance );
+        super( PieceType.KNIGHT, piecePosition, pieceAlliance );
     }
 
     @Override

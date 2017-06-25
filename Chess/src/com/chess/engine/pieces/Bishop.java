@@ -20,7 +20,7 @@ public class Bishop
 
     public Bishop( int piecePosition, Alliance pieceAlliance )
     {
-        super( piecePosition, pieceAlliance );
+        super( PieceType.BISHOP, piecePosition, pieceAlliance );
     }
 
     @Override
