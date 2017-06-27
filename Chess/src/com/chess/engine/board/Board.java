@@ -15,6 +15,7 @@ import com.chess.engine.pieces.Piece;
 import com.chess.engine.pieces.Queen;
 import com.chess.engine.pieces.Rook;
 import com.chess.engine.player.BlackPlayer;
+import com.chess.engine.player.Player;
 import com.chess.engine.player.WhitePlayer;
 import com.google.common.collect.ImmutableList;
 
@@ -181,5 +182,15 @@ public class Board
     public Collection<Piece> getWhitePieces()
     {
         return this.whitePieces;
+    }
+
+    public Player blackPlayer()
+    {
+        return blackPlayer();
+    }
+
+    public Player whitePlayer()
+    {
+        return whitePlayer();
     }
 }
