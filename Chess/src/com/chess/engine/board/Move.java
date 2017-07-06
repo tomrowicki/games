@@ -38,4 +38,9 @@ public abstract class Move
             }
         }
     }
+
+    public int getDesinationCoordinate()
+    {
+        return this.destinationCoordinate;
+    }
 }
