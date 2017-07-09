@@ -36,6 +36,20 @@ public abstract class Move
                 super( board, movePiece, destinationCoordinate );
                 this.attackedPiece = attackedPiece;
             }
+
+            @Override
+            public Board execute()
+            {
+                // TODO Auto-generated method stub
+                return null;
+            }
+        }
+
+        @Override
+        public Board execute()
+        {
+            // TODO Auto-generated method stub
+            return null;
         }
     }
 
@@ -43,4 +57,6 @@ public abstract class Move
     {
         return this.destinationCoordinate;
     }
+
+    public abstract Board execute();
 }

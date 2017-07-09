@@ -31,6 +31,8 @@ public class Board
 
     private final BlackPlayer blackPlayer;
 
+    private final Player currentPlater;
+
     private Board( Builder builder )
     {
         this.gameBoard = createGameBoard( builder );
@@ -42,6 +44,7 @@ public class Board
 
         this.whitePlayer = new WhitePlayer( this, whiteStandardLegalMoves, blackStandardLegalMoves );
         this.blackPlayer = new BlackPlayer( this, whiteStandardLegalMoves, blackStandardLegalMoves );
+        this.currentPlater = null;
     }
 
     @Override
@@ -192,5 +195,10 @@ public class Board
     public Player whitePlayer()
     {
         return whitePlayer();
+    }
+
+    public Player currentPlayer()
+    {
+        return this.currentPlater;
     }
 }
