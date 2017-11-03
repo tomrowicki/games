@@ -33,7 +33,7 @@ public class Board
 
     private final Player currentPlater;
 
-    private Board( Builder builder )
+    private Board( final Builder builder )
     {
         this.gameBoard = createGameBoard( builder );
         this.whitePieces = calculateActivePieces( this.gameBoard, Alliance.WHITE );
@@ -44,7 +44,7 @@ public class Board
 
         this.whitePlayer = new WhitePlayer( this, whiteStandardLegalMoves, blackStandardLegalMoves );
         this.blackPlayer = new BlackPlayer( this, whiteStandardLegalMoves, blackStandardLegalMoves );
-        this.currentPlater = null;
+        this.currentPlater = builder.nextMoveMaker.choosePlayer( this.whitePlayer(), this.blackPlayer );
     }
 
     @Override
