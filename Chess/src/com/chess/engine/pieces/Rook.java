@@ -8,8 +8,8 @@ import com.chess.engine.Alliance;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
+import com.chess.engine.board.Move.AttackMove;
 import com.chess.engine.board.Move.MajorMove;
-import com.chess.engine.board.Move.MajorMove.AttackMove;
 import com.chess.engine.board.Tile;
 import com.google.common.collect.ImmutableList;
 
@@ -84,5 +84,11 @@ public class Rook
     {
         return BoardUtils.EIGHTH_COLUMN[currentPosition]
             && ( candidateOffset == 1 );
+    }
+
+    @Override
+    public Rook movePiece( Move move )
+    {
+        return new Rook( move.getDesinationCoordinate(), move.getMovedPiece().getPieceAlliance() );
     }
 }

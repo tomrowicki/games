@@ -8,8 +8,8 @@ import com.chess.engine.Alliance;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
+import com.chess.engine.board.Move.AttackMove;
 import com.chess.engine.board.Move.MajorMove;
-import com.chess.engine.board.Move.MajorMove.AttackMove;
 import com.chess.engine.board.Tile;
 import com.google.common.collect.ImmutableList;
 
@@ -78,5 +78,11 @@ public class King
     {
         return BoardUtils.EIGHTH_COLUMN[currentPosition]
             && ( candidatteOffset == -7 || candidatteOffset == 1 || candidatteOffset == 9 );
+    }
+
+    @Override
+    public King movePiece( Move move )
+    {
+        return new King( move.getDesinationCoordinate(), move.getMovedPiece().getPieceAlliance() );
     }
 }

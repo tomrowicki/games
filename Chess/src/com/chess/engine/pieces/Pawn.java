@@ -89,4 +89,9 @@ public class Pawn
         return Piece.PieceType.PAWN.toString();
     }
 
+    @Override
+    public Pawn movePiece( Move move )
+    {
+        return new Pawn( move.getDesinationCoordinate(), move.getMovedPiece().getPieceAlliance() );
+    }
 }
