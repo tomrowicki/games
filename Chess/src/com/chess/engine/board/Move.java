@@ -54,10 +54,9 @@ public abstract class Move
             {
                 builder.setPiece( piece );
             }
-            // FIXME move the moved piece
             builder.setPiece( this.movedPiece.movePiece( this ) );
             builder.setMoveMaker( board.currentPlayer().getOpponent().getAlliance() );
-            return null;
+            return builder.build();
         }
     }
 
