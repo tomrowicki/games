@@ -155,6 +155,8 @@ public class Board
 
         Alliance nextMoveMaker;
 
+        Pawn enPassantPawn;
+
         public Builder()
         {
             this.boardConfig = new HashMap<>();
@@ -175,6 +177,12 @@ public class Board
         public Board build()
         {
             return new Board( this );
+        }
+
+        public void setEnPassantPawn( Pawn movedPawn )
+        {
+            // TODO Auto-generated method stub
+
         }
     }
 
