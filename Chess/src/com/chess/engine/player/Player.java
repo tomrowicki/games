@@ -10,123 +10,104 @@ import com.chess.engine.board.Move;
 import com.chess.engine.pieces.King;
 import com.chess.engine.pieces.Piece;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 
-public abstract class Player
-{
-    protected final Board board;
+public abstract class Player {
 
-    protected final King playerKing;
+	protected final Board board;
 
-    protected final Collection<Move> legalMoves;
+	protected final King playerKing;
 
-    private final boolean isInCheck;
+	protected final Collection<Move> legalMoves;
 
-    Player( final Board board, Collection<Move> legalMoves, Collection<Move> opponentMoves )
-    {
-        this.board = board;
-        this.playerKing = establishKing();
-        this.legalMoves = legalMoves;
-        this.isInCheck =
-            !Player.calculateAttacksOnTile( this.playerKing.getPiecePosition(), opponentMoves ).isEmpty();
-    }
+	private final boolean isInCheck;
 
-    public King getPlayerKing()
-    {
-        return this.playerKing;
-    }
+	Player(final Board board, Collection<Move> legalMoves, Collection<Move> opponentMoves) {
+		this.board = board;
+		this.playerKing = establishKing();
+		this.legalMoves = ImmutableList
+				.copyOf(Iterables.concat(legalMoves, calculateKingCastles(legalMoves, opponentMoves)));
+		this.isInCheck = !Player.calculateAttacksOnTile(this.playerKing.getPiecePosition(), opponentMoves).isEmpty();
+	}
 
-    public Collection<Move> getLegalMoves()
-    {
-        return this.legalMoves;
-    }
+	public King getPlayerKing() {
+		return this.playerKing;
+	}
 
-    protected static Collection<Move> calculateAttacksOnTile( int piecePosition, Collection<Move> moves )
-    {
-        final List<Move> attackMoves = new ArrayList<>();
-        for ( final Move move : moves )
-        {
-            if ( piecePosition == move.getDesinationCoordinate() )
-            {
-                attackMoves.add( move );
-            }
-        }
-        return ImmutableList.copyOf( attackMoves );
-    }
+	public Collection<Move> getLegalMoves() {
+		return this.legalMoves;
+	}
 
-    private King establishKing()
-    {
-        for ( final Piece piece : getActivePieces() )
-        {
-            if ( piece.getPieceType().isKing() )
-            {
-                return (King) piece;
-            }
-        }
-        throw new RuntimeException( "Should not reach here! Not a valid board!!" );
-    }
+	protected static Collection<Move> calculateAttacksOnTile(int piecePosition, Collection<Move> moves) {
+		final List<Move> attackMoves = new ArrayList<>();
+		for (final Move move : moves) {
+			if (piecePosition == move.getDesinationCoordinate()) {
+				attackMoves.add(move);
+			}
+		}
+		return ImmutableList.copyOf(attackMoves);
+	}
 
-    public boolean isMoveLegal( final Move move )
-    {
-        return this.legalMoves.contains( move );
-    }
+	private King establishKing() {
+		for (final Piece piece : getActivePieces()) {
+			if (piece.getPieceType().isKing()) {
+				return (King) piece;
+			}
+		}
+		throw new RuntimeException("Should not reach here! Not a valid board!!");
+	}
 
-    public boolean isInCheck()
-    {
-        return this.isInCheck;
-    }
+	public boolean isMoveLegal(final Move move) {
+		return this.legalMoves.contains(move);
+	}
 
-    public boolean isInCheckMate()
-    {
-        return this.isInCheck && !hasEscapeMoves();
-    }
+	public boolean isInCheck() {
+		return this.isInCheck;
+	}
 
-    public boolean isInStalemate()
-    {
-        return !this.isInCheck && !hasEscapeMoves();
-    }
+	public boolean isInCheckMate() {
+		return this.isInCheck && !hasEscapeMoves();
+	}
 
-    protected boolean hasEscapeMoves()
-    {
-        for ( final Move move : this.legalMoves )
-        {
-            final MoveTransition transition = makeMove( move );
-            if ( transition.getMoveStatus().isDone() )
-            {
-                return true;
-            }
-        }
-        return false;
-    }
+	public boolean isInStalemate() {
+		return !this.isInCheck && !hasEscapeMoves();
+	}
 
-    // TODO
-    public boolean isCastled()
-    {
-        return false;
-    }
+	protected boolean hasEscapeMoves() {
+		for (final Move move : this.legalMoves) {
+			final MoveTransition transition = makeMove(move);
+			if (transition.getMoveStatus().isDone()) {
+				return true;
+			}
+		}
+		return false;
+	}
 
-    public MoveTransition makeMove( final Move move )
-    {
-        if ( !isMoveLegal( move ) )
-        {
-            return new MoveTransition( this.board, move, MoveStatus.ILLEGAL_MOVE );
-        }
-        final Board transitionBoard = move.execute();
-        final Collection<Move> kingAttacks = Player
-            .calculateAttacksOnTile( transitionBoard.currentPlayer().getOpponent().getPlayerKing().getPiecePosition(),
-                                     transitionBoard.currentPlayer().getLegalMoves() );
-        if ( !kingAttacks.isEmpty() )
-        {
-            return new MoveTransition( this.board, move, MoveStatus.LEAVES_PLAYER_IN_CHECK );
-        }
-        return new MoveTransition( transitionBoard, move, MoveStatus.DONE );
-    }
+	// TODO
+	public boolean isCastled() {
+		return false;
+	}
 
-    public abstract Collection<Piece> getActivePieces();
+	public MoveTransition makeMove(final Move move) {
+		if (!isMoveLegal(move)) {
+			return new MoveTransition(this.board, move, MoveStatus.ILLEGAL_MOVE);
+		}
+		final Board transitionBoard = move.execute();
+		final Collection<Move> kingAttacks = Player.calculateAttacksOnTile(
+				transitionBoard.currentPlayer().getOpponent().getPlayerKing().getPiecePosition(),
+				transitionBoard.currentPlayer().getLegalMoves());
+		if (!kingAttacks.isEmpty()) {
+			return new MoveTransition(this.board, move, MoveStatus.LEAVES_PLAYER_IN_CHECK);
+		}
+		return new MoveTransition(transitionBoard, move, MoveStatus.DONE);
+	}
 
-    public abstract Alliance getAlliance();
+	public abstract Collection<Piece> getActivePieces();
 
-    public abstract Player getOpponent();
+	public abstract Alliance getAlliance();
 
-    protected abstract Collection<Move> calculateKingCastles( Collection<Move> playerLegals,
-                                                              Collection<Move> opponentsLegals );
+	public abstract Player getOpponent();
+
+	protected abstract Collection<Move> calculateKingCastles(final Collection<Move> playerLegals,
+			Collection<Move> opponentsLegals);
 }
