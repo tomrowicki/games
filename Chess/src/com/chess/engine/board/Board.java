@@ -180,7 +180,7 @@ public class Board {
 	}
 
 	public Player whitePlayer() {
-		return whitePlayer();
+		return whitePlayer;
 	}
 
 	public Player currentPlayer() {
