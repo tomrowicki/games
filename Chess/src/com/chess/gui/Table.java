@@ -1,6 +1,7 @@
 package com.chess.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -28,6 +29,10 @@ public class Table {
 	private final static Dimension BOARD_PANEL_DIMENSION = new Dimension(400, 350);
 
 	private final static Dimension TILE_PANEL_DIMENSION = new Dimension(10, 10);
+
+	private final Color lightTileColor = Color.decode("#FFFACD");
+
+	private final Color darkTileColor = Color.decode("#593E1A");
 
 	public Table() {
 		this.gameFrame = new JFrame("JChess");
@@ -61,9 +66,20 @@ public class Table {
 			}
 		});
 		fileMenu.add(openPGN);
+
+		final JMenuItem exitMenuItem = new JMenuItem("Exit");
+		exitMenuItem.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+		fileMenu.add(exitMenuItem);
 		return fileMenu;
 	}
 
+	@SuppressWarnings("serial")
 	private class BoardPanel extends JPanel {
 
 		final List<TilePanel> boardTiles;
@@ -81,6 +97,7 @@ public class Table {
 		}
 	}
 
+	@SuppressWarnings("serial")
 	private class TilePanel extends JPanel {
 
 		private final int tileId;
@@ -94,8 +111,8 @@ public class Table {
 		}
 
 		private void assignTileColor() {
-			// TODO Auto-generated method stub
-
+			boolean isLight = ((tileId + tileId / 8) % 2 == 0);
+			setBackground(isLight ? lightTileColor : darkTileColor);
 		}
 	}
 }
