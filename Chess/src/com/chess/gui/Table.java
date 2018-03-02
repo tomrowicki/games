@@ -7,15 +7,22 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
+import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 
 public class Table {
@@ -108,6 +115,21 @@ public class Table {
 			setPreferredSize(TILE_PANEL_DIMENSION);
 			assignTileColor();
 			validate();
+		}
+
+		private void assignTilePieceIcon(final Board board) {
+			this.removeAll();
+			if (board.getTile(this.tileId).isTileOccupied()) {
+				String pieceIconPath = "";
+				try {
+					final BufferedImage image = ImageIO.read(new File(pieceIconPath
+							+ board.getTile(this.tileId).getPiece().getPieceAlliance().toString().substring(0, 1)
+							+ board.getTile(this.tileId).getPiece().toString() + ".gif"));
+					add(new JLabel(new ImageIcon(image)));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 
 		private void assignTileColor() {
