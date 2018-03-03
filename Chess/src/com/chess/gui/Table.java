@@ -7,6 +7,8 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -21,9 +23,13 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
+import com.chess.engine.board.Move;
+import com.chess.engine.board.Tile;
+import com.chess.engine.pieces.Piece;
 
 public class Table {
 
@@ -32,6 +38,12 @@ public class Table {
 	private final BoardPanel boardPanel;
 
 	private final Board chessBoard;
+
+	private Tile sourceTile;
+
+	private Tile destinationTile;
+
+	private Piece humanMovedPiece;
 
 	private final static Dimension OUTER_FRAME_DIMENSION = new Dimension(600, 600);
 
@@ -120,6 +132,54 @@ public class Table {
 			setPreferredSize(TILE_PANEL_DIMENSION);
 			assignTileColor();
 			assignTilePieceIcon(chessBoard);
+
+			addMouseListener(new MouseListener() {
+
+				@Override
+				public void mouseClicked(final MouseEvent e) {
+					if (SwingUtilities.isRightMouseButton(e)) {
+						sourceTile = null;
+						destinationTile = null;
+						humanMovedPiece = null;
+					} else if (SwingUtilities.isLeftMouseButton(e)) {
+						if (sourceTile == null) {
+							sourceTile = chessBoard.getTile(tileId);
+							humanMovedPiece = sourceTile.getPiece();
+							if (humanMovedPiece == null) {
+								sourceTile = null;
+							}
+						} else {
+							destinationTile = chessBoard.getTile(tileId);
+							final Move move = null;
+						}
+					}
+				}
+
+				@Override
+				public void mousePressed(final MouseEvent e) {
+					// TODO Auto-generated method stub
+
+				}
+
+				@Override
+				public void mouseReleased(final MouseEvent e) {
+					// TODO Auto-generated method stub
+
+				}
+
+				@Override
+				public void mouseEntered(final MouseEvent e) {
+					// TODO Auto-generated method stub
+
+				}
+
+				@Override
+				public void mouseExited(final MouseEvent e) {
+					// TODO Auto-generated method stub
+
+				}
+			});
+
 			validate();
 		}
 
