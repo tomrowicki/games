@@ -30,6 +30,7 @@ import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Tile;
 import com.chess.engine.pieces.Piece;
+import com.chess.engine.player.MoveTransition;
 
 public class Table {
 
@@ -37,7 +38,7 @@ public class Table {
 
 	private final BoardPanel boardPanel;
 
-	private final Board chessBoard;
+	private Board chessBoard;
 
 	private Tile sourceTile;
 
@@ -119,6 +120,16 @@ public class Table {
 			setPreferredSize(BOARD_PANEL_DIMENSION);
 			validate();
 		}
+
+		public void drawBoard(final Board board) {
+			removeAll();
+			for (TilePanel tilePanel : boardTiles) {
+				tilePanel.drawTile(board);
+				add(tilePanel);
+			}
+			validate();
+			repaint();
+		}
 	}
 
 	@SuppressWarnings("serial")
@@ -150,8 +161,21 @@ public class Table {
 							}
 						} else {
 							destinationTile = chessBoard.getTile(tileId);
-							final Move move = null;
+							final Move move = Move.MoveFactory.createMove(chessBoard, sourceTile.getTileCoordinate(),
+									destinationTile.getTileCoordinate());
+							final MoveTransition transition = chessBoard.currentPlayer().makeMove(move);
+							if (transition.getMoveStatus().isDone()) {
+								chessBoard = transition.getTransitionBoard();
+								// TODO add the move that was made to the move
+								// log
+							}
+							sourceTile = null;
+							destinationTile = null;
+							humanMovedPiece = null;
 						}
+						SwingUtilities.invokeLater(() -> {
+							boardPanel.drawBoard(chessBoard);
+						});
 					}
 				}
 
@@ -180,6 +204,12 @@ public class Table {
 				}
 			});
 
+			validate();
+		}
+
+		public void drawTile(final Board board) {
+			assignTileColor();
+			assignTilePieceIcon(board);
 			validate();
 		}
 

@@ -176,7 +176,7 @@ public class Board {
 	}
 
 	public Player blackPlayer() {
-		return blackPlayer();
+		return blackPlayer;
 	}
 
 	public Player whitePlayer() {
