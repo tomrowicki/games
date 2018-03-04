@@ -6,17 +6,19 @@ import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -31,6 +33,7 @@ import com.chess.engine.board.Move;
 import com.chess.engine.board.Tile;
 import com.chess.engine.pieces.Piece;
 import com.chess.engine.player.MoveTransition;
+import com.google.common.collect.Lists;
 
 public class Table {
 
@@ -45,6 +48,10 @@ public class Table {
 	private Tile destinationTile;
 
 	private Piece humanMovedPiece;
+
+	private BoardDirection boardDirection;
+
+	private boolean highlightLegalMoves;
 
 	private final static Dimension OUTER_FRAME_DIMENSION = new Dimension(600, 600);
 
@@ -66,6 +73,9 @@ public class Table {
 		this.gameFrame.setSize(OUTER_FRAME_DIMENSION);
 		this.chessBoard = Board.createStandardBoard();
 		this.boardPanel = new BoardPanel();
+		this.boardDirection = BoardDirection.NORMAL;
+		this.highlightLegalMoves = false;
+
 		this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
 		this.gameFrame.setVisible(true);
 		this.gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -74,6 +84,7 @@ public class Table {
 	private JMenuBar createTableMenuBar() {
 		final JMenuBar tableMenuBar = new JMenuBar();
 		tableMenuBar.add(createFileMenu());
+		tableMenuBar.add(createPreferencesMenu());
 		return tableMenuBar;
 
 	}
@@ -82,26 +93,39 @@ public class Table {
 		final JMenu fileMenu = new JMenu("File");
 		// PGN files are replay files for games of chess available online
 		final JMenuItem openPGN = new JMenuItem("Load PGN File");
-		openPGN.addActionListener(new ActionListener() {
+		openPGN.addActionListener((ActionEvent e) -> {
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				System.out.println("opening up that pgn file!");
-			}
+			// TODO Auto-generated method stub
+			System.out.println("opening up that pgn file!");
 		});
 		fileMenu.add(openPGN);
 
 		final JMenuItem exitMenuItem = new JMenuItem("Exit");
-		exitMenuItem.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
-			}
+		exitMenuItem.addActionListener((ActionEvent e) -> {
+			System.exit(0);
 		});
 		fileMenu.add(exitMenuItem);
 		return fileMenu;
+	}
+
+	private JMenu createPreferencesMenu() {
+		final JMenu preferencesMenu = new JMenu("Preferences");
+		final JMenuItem flipBoardMenuItem = new JMenuItem("Flip Board");
+		flipBoardMenuItem.addActionListener((e) -> {
+			boardDirection = boardDirection.opposite();
+			boardPanel.drawBoard(chessBoard);
+		});
+
+		preferencesMenu.add(flipBoardMenuItem);
+		preferencesMenu.addSeparator();
+		final JCheckBoxMenuItem legalMoveHighlighterCheckBox = new JCheckBoxMenuItem("Highlight Legal Moves", false);
+		legalMoveHighlighterCheckBox.addActionListener((l) -> {
+			highlightLegalMoves = legalMoveHighlighterCheckBox.isSelected();
+		});
+
+		preferencesMenu.add(legalMoveHighlighterCheckBox);
+
+		return preferencesMenu;
 	}
 
 	@SuppressWarnings("serial")
@@ -123,7 +147,7 @@ public class Table {
 
 		public void drawBoard(final Board board) {
 			removeAll();
-			for (TilePanel tilePanel : boardTiles) {
+			for (final TilePanel tilePanel : boardDirection.traverse(boardTiles)) {
 				tilePanel.drawTile(board);
 				add(tilePanel);
 			}
@@ -210,6 +234,7 @@ public class Table {
 		public void drawTile(final Board board) {
 			assignTileColor();
 			assignTilePieceIcon(board);
+			highlightLegals(board);
 			validate();
 		}
 
@@ -231,5 +256,58 @@ public class Table {
 			boolean isLight = ((tileId + tileId / 8) % 2 == 0);
 			setBackground(isLight ? lightTileColor : darkTileColor);
 		}
+
+		private void highlightLegals(final Board board) {
+			if (highlightLegalMoves) {
+				for (final Move move : pieceLegalMoves(board)) {
+					if (move.getDesinationCoordinate() == this.tileId) {
+						try {
+							add(new JLabel(new ImageIcon(ImageIO.read(new File("art/misc/green_dot.png")))));
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		}
+
+		private Collection<Move> pieceLegalMoves(final Board board) {
+			if (humanMovedPiece != null && humanMovedPiece.getPieceAlliance() == board.currentPlayer().getAlliance()) {
+				return humanMovedPiece.calculateLegalMoves(board);
+			}
+			return Collections.emptyList();
+		}
+	}
+
+	public enum BoardDirection {
+		NORMAL {
+
+			@Override
+			List<TilePanel> traverse(List<TilePanel> boardTiles) {
+				return boardTiles;
+			}
+
+			@Override
+			BoardDirection opposite() {
+				return FLIPPED;
+			}
+		},
+		FLIPPED {
+
+			@Override
+			List<TilePanel> traverse(List<TilePanel> boardTiles) {
+				return Lists.reverse(boardTiles);
+			}
+
+			@Override
+			BoardDirection opposite() {
+				return NORMAL;
+			}
+
+		};
+
+		abstract List<TilePanel> traverse(final List<TilePanel> boardTiles);
+
+		abstract BoardDirection opposite();
 	}
 }
