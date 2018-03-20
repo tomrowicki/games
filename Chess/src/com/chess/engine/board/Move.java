@@ -17,11 +17,11 @@ public abstract class Move {
 
 	public static final Move NULL_MOVE = new NullMove();
 
-	private Move(final Board board, final Piece movePiece, final int destinationCoordinate) {
+	private Move(final Board board, final Piece movedPiece, final int destinationCoordinate) {
 		this.board = board;
-		this.movedPiece = movePiece;
+		this.movedPiece = movedPiece;
 		this.destinationCoordinate = destinationCoordinate;
-		this.isFirstMove = movePiece.isFirstMove();
+		this.isFirstMove = movedPiece.isFirstMove();
 	}
 
 	private Move(final Board board, final int destinationCoordinate) {
@@ -202,6 +202,11 @@ public abstract class Move {
 			builder.setMoveMaker(this.board.currentPlayer().getOpponent().getAlliance());
 			return builder.build();
 		}
+
+		@Override
+		public String toString() {
+			return BoardUtils.getPositionAtCoordinate(this.destinationCoordinate);
+		}
 	}
 
 	static abstract class CastleMove extends Move {
@@ -277,7 +282,7 @@ public abstract class Move {
 	public static final class NullMove extends Move {
 
 		public NullMove() {
-			super(null, null, -1);
+			super(null, -1);
 		}
 
 		@Override

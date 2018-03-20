@@ -15,6 +15,7 @@ import com.chess.engine.board.Board;
 import com.chess.engine.board.Move;
 import com.chess.gui.Table.MoveLog;
 
+@SuppressWarnings("serial")
 public class GameHistoryPanel extends JPanel {
 
 	private static final Dimension HISTORY_PANEL_DIMENSION = new Dimension(100, 400);
@@ -44,8 +45,8 @@ public class GameHistoryPanel extends JPanel {
 				this.model.setValueAt(moveText, currentRow, 0);
 			} else if (move.getMovedPiece().getPieceAlliance().isBlack()) {
 				this.model.setValueAt(moveText, currentRow, 1);
+				currentRow++;
 			}
-			currentRow++;
 		}
 
 		if (moveHistory.getMoves().size() > 0) {
@@ -53,6 +54,8 @@ public class GameHistoryPanel extends JPanel {
 			final String moveText = lastMove.toString();
 
 			if (lastMove.getMovedPiece().getPieceAlliance().isWhite()) {
+				this.model.setValueAt(moveText + calculateCheckAndCheckMateHash(board), currentRow, 0);
+			} else if (lastMove.getMovedPiece().getPieceAlliance().isBlack()) {
 				this.model.setValueAt(moveText + calculateCheckAndCheckMateHash(board), currentRow - 1, 1);
 			}
 		}
@@ -70,7 +73,6 @@ public class GameHistoryPanel extends JPanel {
 		return "";
 	}
 
-	@SuppressWarnings("serial")
 	private static class DataModel extends DefaultTableModel {
 
 		private final List<Row> values;
@@ -126,6 +128,7 @@ public class GameHistoryPanel extends JPanel {
 			}
 			if (column == 0) {
 				currentRow.setWhiteMove((String) aValue);
+				fireTableRowsInserted(row, row);
 			} else if (column == 1) {
 				currentRow.setBlackMove((String) aValue);
 				fireTableCellUpdated(row, column);
