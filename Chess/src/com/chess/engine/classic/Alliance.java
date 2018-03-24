@@ -1,4 +1,4 @@
-package com.chess.engine;
+package com.chess.engine.classic;
 
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.player.BlackPlayer;

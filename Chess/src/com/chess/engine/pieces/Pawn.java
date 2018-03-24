@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.chess.engine.Alliance;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Move.PawnPromotion;
+import com.chess.engine.classic.Alliance;
 import com.google.common.collect.ImmutableList;
 
 public class Pawn extends Piece {
@@ -24,7 +24,7 @@ public class Pawn extends Piece {
 		super(PieceType.PAWN, piecePosition, pieceAlliance, true);
 	}
 
-	public Pawn(final int piecePosition, final Alliance pieceAlliance, final boolean isFirstMove) {
+	public Pawn(final Alliance pieceAlliance, final int piecePosition, final boolean isFirstMove) {
 		super(PieceType.PAWN, piecePosition, pieceAlliance, isFirstMove);
 	}
 
