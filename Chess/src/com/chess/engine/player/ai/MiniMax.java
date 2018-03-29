@@ -93,6 +93,6 @@ public class MiniMax implements MoveStrategy {
 	}
 
 	private static boolean isEndGameScenario(final Board board) {
-		return board.currentPlayer().isInCheckMate() || board.currentPlayer().isInStalemate();
+		return board.currentPlayer().isInCheckMate() || board.currentPlayer().isInStaleMate();
 	}
 }
