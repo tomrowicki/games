@@ -9,8 +9,8 @@ import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Move.MajorAttackMove;
 import com.chess.engine.board.Move.MajorMove;
-import com.chess.engine.classic.Alliance;
 import com.chess.engine.board.Tile;
+import com.chess.engine.classic.Alliance;
 import com.google.common.collect.ImmutableList;
 
 public class King extends Piece {
@@ -26,12 +26,38 @@ public class King extends Piece {
 			9
 	};
 
-	public King(final int piecePosition, final Alliance pieceAlliance) {
+	private final boolean isCastled;
+
+	private final boolean kingSideCastleCapable;
+
+	private final boolean queenSideCastleCapable;
+
+	public King(final int piecePosition, final Alliance pieceAlliance, final boolean kingSideCastleCapable,
+			final boolean queenSideCastleCapable) {
 		super(PieceType.KING, piecePosition, pieceAlliance, true);
+		this.isCastled = false;
+		this.kingSideCastleCapable = kingSideCastleCapable;
+		this.queenSideCastleCapable = queenSideCastleCapable;
 	}
 
-	public King(final int piecePosition, final Alliance pieceAlliance, final boolean isFirstMove) {
+	public King(final int piecePosition, final Alliance pieceAlliance, final boolean isFirstMove,
+			final boolean isCastled, final boolean kingSideCastleCapable, final boolean queenSideCastleCapable) {
 		super(PieceType.KING, piecePosition, pieceAlliance, isFirstMove);
+		this.isCastled = isCastled;
+		this.kingSideCastleCapable = kingSideCastleCapable;
+		this.queenSideCastleCapable = queenSideCastleCapable;
+	}
+
+	public boolean isCastled() {
+		return this.isCastled;
+	}
+
+	public boolean isKingSideCastleCapable() {
+		return this.kingSideCastleCapable;
+	}
+
+	public boolean isQueenSideCastleCapable() {
+		return this.queenSideCastleCapable;
 	}
 
 	@Override
@@ -82,6 +108,7 @@ public class King extends Piece {
 
 	@Override
 	public King movePiece(Move move) {
-		return new King(move.getDesinationCoordinate(), move.getMovedPiece().getPieceAlliance());
+		return new King(move.getDesinationCoordinate(), move.getMovedPiece().getPieceAlliance(), false,
+				move.isCastlingMove(), false, false);
 	}
 }
