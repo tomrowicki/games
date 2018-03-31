@@ -1,21 +1,22 @@
 package com.tests.chess.engine;
 
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 import com.chess.engine.board.Board;
+import com.chess.engine.board.Board.Builder;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Move.MoveFactory;
 import com.chess.engine.classic.Alliance;
-import com.chess.engine.classic.classic.player.ai.StandardBoardEvaluator;
 import com.chess.engine.pieces.Bishop;
 import com.chess.engine.pieces.King;
 import com.chess.engine.pieces.Rook;
 import com.chess.engine.player.MoveTransition;
+import com.chess.engine.player.ai.StandardBoardEvaluator;
 
 public class TestPlayer {
 
@@ -52,12 +53,12 @@ public class TestPlayer {
 	public void testDiscoveredCheck() {
 		final Builder builder = new Builder();
 		// Black Layout
-		builder.setPiece(new King(Alliance.BLACK, 4, false, false));
-		builder.setPiece(new Rook(Alliance.BLACK, 24));
+		builder.setPiece(new King(4, Alliance.BLACK, false, false));
+		builder.setPiece(new Rook(24, Alliance.BLACK));
 		// White Layout
-		builder.setPiece(new Bishop(Alliance.WHITE, 44));
-		builder.setPiece(new Rook(Alliance.WHITE, 52));
-		builder.setPiece(new King(Alliance.WHITE, 58, false, false));
+		builder.setPiece(new Bishop(44, Alliance.WHITE));
+		builder.setPiece(new Rook(52, Alliance.WHITE));
+		builder.setPiece(new King(58, Alliance.WHITE, false, false));
 		// Set the current player
 		builder.setMoveMaker(Alliance.WHITE);
 		final Board board = builder.build();

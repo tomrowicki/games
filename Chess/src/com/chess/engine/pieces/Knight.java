@@ -9,8 +9,8 @@ import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Move.MajorAttackMove;
 import com.chess.engine.board.Move.MajorMove;
-import com.chess.engine.classic.Alliance;
 import com.chess.engine.board.Tile;
+import com.chess.engine.classic.Alliance;
 import com.google.common.collect.ImmutableList;
 
 public class Knight extends Piece {
@@ -73,25 +73,27 @@ public class Knight extends Piece {
 	}
 
 	private static boolean isFirstColumnExclusion(final int currentPosition, final int candidateOffset) {
-		return BoardUtils.FIRST_COLUMN[currentPosition]
-				&& (candidateOffset == -17 || candidateOffset == -10 || candidateOffset == 6 || candidateOffset == 15);
+		return BoardUtils.INSTANCE.FIRST_COLUMN.get(currentPosition) && ((candidateOffset == -17)
+				|| (candidateOffset == -10) || (candidateOffset == 6) || (candidateOffset == 15));
 	}
 
-	private static boolean isSecondColumnExclusion(final int currentPosition, final int candidatteOffset) {
-		return BoardUtils.SECOND_COLUMN[currentPosition] && (candidatteOffset == -10 || candidatteOffset == 6);
+	private static boolean isSecondColumnExclusion(final int currentPosition, final int candidateOffset) {
+		return BoardUtils.INSTANCE.SECOND_COLUMN.get(currentPosition)
+				&& ((candidateOffset == -10) || (candidateOffset == 6));
 	}
 
-	private static boolean isSeventhColumnExclusion(final int currentPosition, final int candidatteOffset) {
-		return BoardUtils.SEVENTH_COLUMN[currentPosition] && (candidatteOffset == -6 || candidatteOffset == 10);
+	private static boolean isSeventhColumnExclusion(final int currentPosition, final int candidateOffset) {
+		return BoardUtils.INSTANCE.SEVENTH_COLUMN.get(currentPosition)
+				&& ((candidateOffset == -6) || (candidateOffset == 10));
 	}
 
-	private static boolean isEighthColumnExclusion(final int currentPosition, final int candidatteOffset) {
-		return BoardUtils.EIGHTH_COLUMN[currentPosition] && (candidatteOffset == -15 || candidatteOffset == -6
-				|| candidatteOffset == 10 || candidatteOffset == 17);
+	private static boolean isEighthColumnExclusion(final int currentPosition, final int candidateOffset) {
+		return BoardUtils.INSTANCE.EIGHTH_COLUMN.get(currentPosition) && ((candidateOffset == -15)
+				|| (candidateOffset == -6) || (candidateOffset == 10) || (candidateOffset == 17));
 	}
 
 	@Override
 	public Knight movePiece(Move move) {
-		return new Knight(move.getDesinationCoordinate(), move.getMovedPiece().getPieceAlliance());
+		return new Knight(move.getDestinationCoordinate(), move.getMovedPiece().getPieceAlliance());
 	}
 }

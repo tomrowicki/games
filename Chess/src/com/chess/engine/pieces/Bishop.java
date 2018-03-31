@@ -9,8 +9,8 @@ import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Move.MajorAttackMove;
 import com.chess.engine.board.Move.MajorMove;
-import com.chess.engine.classic.Alliance;
 import com.chess.engine.board.Tile;
+import com.chess.engine.classic.Alliance;
 import com.google.common.collect.ImmutableList;
 
 public class Bishop extends Piece {
@@ -69,16 +69,20 @@ public class Bishop extends Piece {
 		return Piece.PieceType.BISHOP.toString();
 	}
 
-	private static boolean isFirstColumnExclusion(final int currentPosition, final int candidateOffset) {
-		return BoardUtils.FIRST_COLUMN[currentPosition] && (candidateOffset == -9 || candidateOffset == 7);
+	private static boolean isFirstColumnExclusion(final int currentCandidate,
+			final int candidateDestinationCoordinate) {
+		return (BoardUtils.INSTANCE.FIRST_COLUMN.get(candidateDestinationCoordinate)
+				&& ((currentCandidate == -9) || (currentCandidate == 7)));
 	}
 
-	private static boolean isEighthColumnExclusion(final int currentPosition, final int candidateOffset) {
-		return BoardUtils.EIGHTH_COLUMN[currentPosition] && (candidateOffset == -7 || candidateOffset == 9);
+	private static boolean isEighthColumnExclusion(final int currentCandidate,
+			final int candidateDestinationCoordinate) {
+		return BoardUtils.INSTANCE.EIGHTH_COLUMN.get(candidateDestinationCoordinate)
+				&& ((currentCandidate == -7) || (currentCandidate == 9));
 	}
 
 	@Override
 	public Bishop movePiece(Move move) {
-		return new Bishop(move.getDesinationCoordinate(), move.getMovedPiece().getPieceAlliance());
+		return new Bishop(move.getDestinationCoordinate(), move.getMovedPiece().getPieceAlliance());
 	}
 }

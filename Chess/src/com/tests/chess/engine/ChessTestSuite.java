@@ -11,7 +11,6 @@ import org.junit.runners.Suite;
 		TestPlayer.class,
 		TestCheckmate.class,
 		TestMiniMax.class,
-		TestAlphaBeta.class,
 		TestCastling.class,
 		TestPawnStructure.class,
 		TestFENParser.class,

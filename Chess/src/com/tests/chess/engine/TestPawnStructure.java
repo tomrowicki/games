@@ -1,15 +1,16 @@
 package com.tests.chess.engine;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
 import com.chess.engine.board.Board;
+import com.chess.engine.board.Board.Builder;
 import com.chess.engine.classic.Alliance;
-import com.chess.engine.classic.classic.player.ai.PawnStructureAnalyzer;
-import com.chess.engine.classic.classic.player.ai.StandardBoardEvaluator;
 import com.chess.engine.pieces.King;
 import com.chess.engine.pieces.Pawn;
+import com.chess.engine.player.ai.PawnStructureAnalyzer;
+import com.chess.engine.player.ai.StandardBoardEvaluator;
 import com.chess.pgn.FenUtilities;
 
 public class TestPawnStructure {
@@ -44,15 +45,15 @@ public class TestPawnStructure {
 	public void testIsolatedPawnByExample3() {
 		final Builder builder = new Builder();
 		// Black Layout
-		builder.setPiece(new King(Alliance.BLACK, 4, false, false));
-		builder.setPiece(new Pawn(Alliance.BLACK, 12));
-		builder.setPiece(new Pawn(Alliance.BLACK, 20));
-		builder.setPiece(new Pawn(Alliance.BLACK, 28));
-		builder.setPiece(new Pawn(Alliance.BLACK, 8));
-		builder.setPiece(new Pawn(Alliance.BLACK, 16));
+		builder.setPiece(new King(4, Alliance.BLACK, false, false));
+		builder.setPiece(new Pawn(12, Alliance.BLACK));
+		builder.setPiece(new Pawn(20, Alliance.BLACK));
+		builder.setPiece(new Pawn(28, Alliance.BLACK));
+		builder.setPiece(new Pawn(8, Alliance.BLACK));
+		builder.setPiece(new Pawn(16, Alliance.BLACK));
 		// White Layout
-		builder.setPiece(new Pawn(Alliance.WHITE, 52));
-		builder.setPiece(new King(Alliance.WHITE, 60, false, false));
+		builder.setPiece(new Pawn(52, Alliance.WHITE));
+		builder.setPiece(new King(60, Alliance.WHITE, false, false));
 		builder.setMoveMaker(Alliance.WHITE);
 		// Set the current player
 		final Board board = builder.build();

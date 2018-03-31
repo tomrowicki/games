@@ -5,8 +5,8 @@ import static junit.framework.TestCase.assertEquals;
 import org.junit.Test;
 
 import com.chess.engine.board.Board;
-import com.chess.engine.classic.player.ai.MiniMax;
-import com.chess.engine.classic.player.ai.MoveStrategy;
+import com.chess.engine.player.ai.MiniMax;
+import com.chess.engine.player.ai.MoveStrategy;
 import com.chess.pgn.FenUtilities;
 
 /**

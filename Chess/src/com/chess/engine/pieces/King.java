@@ -96,19 +96,21 @@ public class King extends Piece {
 		return Piece.PieceType.KING.toString();
 	}
 
-	private static boolean isFirstColumnExclusion(final int currentPosition, final int candidateOffset) {
-		return BoardUtils.FIRST_COLUMN[currentPosition]
-				&& (candidateOffset == -9 || candidateOffset == -1 || candidateOffset == 7);
+	private static boolean isFirstColumnExclusion(final int currentCandidate,
+			final int candidateDestinationCoordinate) {
+		return BoardUtils.INSTANCE.FIRST_COLUMN.get(currentCandidate) && ((candidateDestinationCoordinate == -9)
+				|| (candidateDestinationCoordinate == -1) || (candidateDestinationCoordinate == 7));
 	}
 
-	private static boolean isEighthColumnExclusion(final int currentPosition, final int candidatteOffset) {
-		return BoardUtils.EIGHTH_COLUMN[currentPosition]
-				&& (candidatteOffset == -7 || candidatteOffset == 1 || candidatteOffset == 9);
+	private static boolean isEighthColumnExclusion(final int currentCandidate,
+			final int candidateDestinationCoordinate) {
+		return BoardUtils.INSTANCE.EIGHTH_COLUMN.get(currentCandidate) && ((candidateDestinationCoordinate == -7)
+				|| (candidateDestinationCoordinate == 1) || (candidateDestinationCoordinate == 9));
 	}
 
 	@Override
 	public King movePiece(Move move) {
-		return new King(move.getDesinationCoordinate(), move.getMovedPiece().getPieceAlliance(), false,
+		return new King(move.getDestinationCoordinate(), move.getMovedPiece().getPieceAlliance(), false,
 				move.isCastlingMove(), false, false);
 	}
 }

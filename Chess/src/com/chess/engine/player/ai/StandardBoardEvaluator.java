@@ -14,6 +14,8 @@ public final class StandardBoardEvaluator implements BoardEvaluator {
 
 	private static final int CASTLE_BONUS = 60;
 
+	private static final StandardBoardEvaluator INSTANCE = new StandardBoardEvaluator();
+
 	@Override
 	public int evaluate(final Board board, final int depth) {
 		return scorePlayer(board, board.whitePlayer(), depth) - scorePlayer(board, board.blackPlayer(), depth);
@@ -49,5 +51,9 @@ public final class StandardBoardEvaluator implements BoardEvaluator {
 			pieceValueScore += piece.getPieceValue();
 		}
 		return pieceValueScore;
+	}
+
+	public static StandardBoardEvaluator get() {
+		return INSTANCE;
 	}
 }

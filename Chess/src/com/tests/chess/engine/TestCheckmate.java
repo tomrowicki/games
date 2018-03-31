@@ -1,17 +1,14 @@
 package com.tests.chess.engine;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 import com.chess.engine.board.Board;
+import com.chess.engine.board.Board.Builder;
 import com.chess.engine.board.BoardUtils;
-import com.chess.engine.board.Move;
 import com.chess.engine.board.Move.MoveFactory;
 import com.chess.engine.classic.Alliance;
-import com.chess.engine.classic.player.ai.MoveStrategy;
-import com.chess.engine.classic.player.ai.StockAlphaBeta;
 import com.chess.engine.pieces.Bishop;
 import com.chess.engine.pieces.King;
 import com.chess.engine.pieces.Knight;
@@ -19,7 +16,6 @@ import com.chess.engine.pieces.Pawn;
 import com.chess.engine.pieces.Queen;
 import com.chess.engine.pieces.Rook;
 import com.chess.engine.player.MoveTransition;
-import com.chess.pgn.FenUtilities;
 
 public class TestCheckmate {
 
@@ -641,23 +637,23 @@ public class TestCheckmate {
 		final Builder builder = new Builder();
 
 		// Black Layout
-		builder.setPiece(new Rook(Alliance.BLACK, 0));
-		builder.setPiece(new Rook(Alliance.BLACK, 5));
-		builder.setPiece(new Pawn(Alliance.BLACK, 8));
-		builder.setPiece(new Pawn(Alliance.BLACK, 9));
-		builder.setPiece(new Pawn(Alliance.BLACK, 10));
-		builder.setPiece(new Pawn(Alliance.BLACK, 13));
-		builder.setPiece(new Pawn(Alliance.BLACK, 14));
-		builder.setPiece(new King(Alliance.BLACK, 15, false, false));
+		builder.setPiece(new Rook(0, Alliance.BLACK));
+		builder.setPiece(new Rook(5, Alliance.BLACK));
+		builder.setPiece(new Pawn(8, Alliance.BLACK));
+		builder.setPiece(new Pawn(9, Alliance.BLACK));
+		builder.setPiece(new Pawn(10, Alliance.BLACK));
+		builder.setPiece(new Pawn(13, Alliance.BLACK));
+		builder.setPiece(new Pawn(14, Alliance.BLACK));
+		builder.setPiece(new King(15, Alliance.BLACK, false, false));
 		// White Layout
-		builder.setPiece(new Knight(Alliance.WHITE, 12));
-		builder.setPiece(new Rook(Alliance.WHITE, 27));
-		builder.setPiece(new Pawn(Alliance.WHITE, 41));
-		builder.setPiece(new Pawn(Alliance.WHITE, 48));
-		builder.setPiece(new Pawn(Alliance.WHITE, 53));
-		builder.setPiece(new Pawn(Alliance.WHITE, 54));
-		builder.setPiece(new Pawn(Alliance.WHITE, 55));
-		builder.setPiece(new King(Alliance.WHITE, 62, false, false));
+		builder.setPiece(new Knight(12, Alliance.WHITE));
+		builder.setPiece(new Rook(27, Alliance.WHITE));
+		builder.setPiece(new Pawn(41, Alliance.WHITE));
+		builder.setPiece(new Pawn(48, Alliance.WHITE));
+		builder.setPiece(new Pawn(53, Alliance.WHITE));
+		builder.setPiece(new Pawn(54, Alliance.WHITE));
+		builder.setPiece(new Pawn(55, Alliance.WHITE));
+		builder.setPiece(new King(62, Alliance.WHITE, false, false));
 		// Set the current player
 		builder.setMoveMaker(Alliance.WHITE);
 
@@ -674,15 +670,15 @@ public class TestCheckmate {
 
 		final Builder builder = new Builder();
 
-		builder.setPiece(new King(Alliance.BLACK, 7, false, false));
-		builder.setPiece(new Pawn(Alliance.BLACK, 8));
-		builder.setPiece(new Pawn(Alliance.BLACK, 10));
-		builder.setPiece(new Pawn(Alliance.BLACK, 15));
-		builder.setPiece(new Pawn(Alliance.BLACK, 17));
+		builder.setPiece(new King(7, Alliance.BLACK, false, false));
+		builder.setPiece(new Pawn(8, Alliance.BLACK));
+		builder.setPiece(new Pawn(10, Alliance.BLACK));
+		builder.setPiece(new Pawn(15, Alliance.BLACK));
+		builder.setPiece(new Pawn(17, Alliance.BLACK));
 		// White Layout
-		builder.setPiece(new Bishop(Alliance.WHITE, 40));
-		builder.setPiece(new Bishop(Alliance.WHITE, 48));
-		builder.setPiece(new King(Alliance.WHITE, 53, false, false));
+		builder.setPiece(new Bishop(40, Alliance.WHITE));
+		builder.setPiece(new Bishop(48, Alliance.WHITE));
+		builder.setPiece(new King(53, Alliance.WHITE, false, false));
 		// Set the current player
 		builder.setMoveMaker(Alliance.WHITE);
 
@@ -700,11 +696,11 @@ public class TestCheckmate {
 		final Builder builder = new Builder();
 
 		// Black Layout
-		builder.setPiece(new King(Alliance.BLACK, 5, false, false));
+		builder.setPiece(new King(5, Alliance.BLACK, false, false));
 		// White Layout
-		builder.setPiece(new Rook(Alliance.WHITE, 9));
-		builder.setPiece(new Queen(Alliance.WHITE, 16));
-		builder.setPiece(new King(Alliance.WHITE, 59, false, false));
+		builder.setPiece(new Rook(9, Alliance.WHITE));
+		builder.setPiece(new Queen(16, Alliance.WHITE));
+		builder.setPiece(new King(59, Alliance.WHITE, false, false));
 		// Set the current player
 		builder.setMoveMaker(Alliance.WHITE);
 
@@ -723,12 +719,12 @@ public class TestCheckmate {
 		final Builder builder = new Builder();
 
 		// Black Layout
-		builder.setPiece(new King(Alliance.BLACK, 4, false, false));
+		builder.setPiece(new King(4, Alliance.BLACK, false, false));
 		// White Layout
-		builder.setPiece(new Queen(Alliance.WHITE, 15));
-		builder.setPiece(new Knight(Alliance.WHITE, 29));
-		builder.setPiece(new Pawn(Alliance.WHITE, 55));
-		builder.setPiece(new King(Alliance.WHITE, 60, false, false));
+		builder.setPiece(new Queen(15, Alliance.WHITE));
+		builder.setPiece(new Knight(29, Alliance.WHITE));
+		builder.setPiece(new Pawn(55, Alliance.WHITE));
+		builder.setPiece(new King(60, Alliance.WHITE, false, false));
 		// Set the current player
 		builder.setMoveMaker(Alliance.WHITE);
 
@@ -746,13 +742,13 @@ public class TestCheckmate {
 
 		final Builder builder = new Builder();
 		// Black Layout
-		builder.setPiece(new King(Alliance.BLACK, 4, false, false));
-		builder.setPiece(new Rook(Alliance.BLACK, 18));
+		builder.setPiece(new King(4, Alliance.BLACK, false, false));
+		builder.setPiece(new Rook(18, Alliance.BLACK));
 		// White Layout
-		builder.setPiece(new Pawn(Alliance.WHITE, 53));
-		builder.setPiece(new Pawn(Alliance.WHITE, 54));
-		builder.setPiece(new Pawn(Alliance.WHITE, 55));
-		builder.setPiece(new King(Alliance.WHITE, 62, false, false));
+		builder.setPiece(new Pawn(53, Alliance.WHITE));
+		builder.setPiece(new Pawn(54, Alliance.WHITE));
+		builder.setPiece(new Pawn(55, Alliance.WHITE));
+		builder.setPiece(new King(62, Alliance.WHITE, false, false));
 		// Set the current player
 		builder.setMoveMaker(Alliance.BLACK);
 
@@ -765,51 +761,4 @@ public class TestCheckmate {
 		assertTrue(t1.getToBoard().currentPlayer().isInCheckMate());
 
 	}
-
-	@Test
-	public void testMateInTwoTest1() {
-		final Board board = FenUtilities.createGameFromFEN("6k1/1b4pp/1B1Q4/4p1P1/p3q3/2P3r1/P1P2PP1/R5K1 w - - 1 0");
-		final MoveStrategy alphaBeta = new StockAlphaBeta(6);
-		final Move bestMove = alphaBeta.execute(board);
-		assertEquals(bestMove, Move.MoveFactory.createMove(board, BoardUtils.INSTANCE.getCoordinateAtPosition("d6"),
-				BoardUtils.INSTANCE.getCoordinateAtPosition("e6")));
-	}
-
-	@Test
-	public void testMateInTwoTest2() {
-		final Board board = FenUtilities.createGameFromFEN("3r3r/1Q5p/p3q2k/3NBp1B/3p3n/5P2/PP4PP/4R2K w - - 1 0");
-		final MoveStrategy alphaBeta = new StockAlphaBeta(6);
-		final Move bestMove = alphaBeta.execute(board);
-		assertEquals(bestMove, Move.MoveFactory.createMove(board, BoardUtils.INSTANCE.getCoordinateAtPosition("b7"),
-				BoardUtils.INSTANCE.getCoordinateAtPosition("g7")));
-	}
-
-	@Test
-	public void testMateInTwoTest3() {
-		final Board board = FenUtilities.createGameFromFEN("rn3rk1/1R3ppp/2p5/8/PQ2P3/1P5P/2P1qPP1/3R2K1 w - - 1 0");
-		final MoveStrategy alphaBeta = new StockAlphaBeta(1);
-		final Move bestMove = alphaBeta.execute(board);
-		assertEquals(bestMove, Move.MoveFactory.createMove(board, BoardUtils.INSTANCE.getCoordinateAtPosition("b4"),
-				BoardUtils.INSTANCE.getCoordinateAtPosition("f8")));
-	}
-
-	@Test
-	public void testMateInFourTest1() {
-		final Board board = FenUtilities.createGameFromFEN("7k/4r2B/1pb5/2P5/4p2Q/2q5/2P2R2/1K6 w - - 1 0");
-		final MoveStrategy alphaBeta = new StockAlphaBeta(6);
-		final Move bestMove = alphaBeta.execute(board);
-		assertEquals(bestMove, Move.MoveFactory.createMove(board, BoardUtils.INSTANCE.getCoordinateAtPosition("f2"),
-				BoardUtils.INSTANCE.getCoordinateAtPosition("f8")));
-	}
-
-	@Test
-	public void testMagnusBlackToMoveAndWinTest1() {
-		final Board board = FenUtilities
-				.createGameFromFEN("2rr2k1/pb3pp1/4q2p/2pn4/2Q1P3/P4P2/1P3BPP/2KR2NR b - - 0 1");
-		final MoveStrategy alphaBeta = new StockAlphaBeta(6);
-		final Move bestMove = alphaBeta.execute(board);
-		assertEquals(bestMove, Move.MoveFactory.createMove(board, BoardUtils.INSTANCE.getCoordinateAtPosition("d5"),
-				BoardUtils.INSTANCE.getCoordinateAtPosition("e3")));
-	}
-
 }

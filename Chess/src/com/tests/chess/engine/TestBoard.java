@@ -1,8 +1,8 @@
 package com.tests.chess.engine;
 
-import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -11,12 +11,9 @@ import com.chess.engine.board.Board.Builder;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Move.MoveFactory;
+import com.chess.engine.board.MoveUtils;
 import com.chess.engine.board.Tile;
 import com.chess.engine.classic.Alliance;
-import com.chess.engine.classic.classic.board.*;
-import com.chess.engine.classic.classic.pieces.*;
-import com.chess.engine.classic.classic.player.ai.BoardEvaluator;
-import com.chess.engine.classic.classic.player.ai.StandardBoardEvaluator;
 import com.chess.engine.pieces.Bishop;
 import com.chess.engine.pieces.King;
 import com.chess.engine.pieces.Knight;
@@ -25,6 +22,8 @@ import com.chess.engine.pieces.Piece;
 import com.chess.engine.pieces.Queen;
 import com.chess.engine.pieces.Rook;
 import com.chess.engine.player.MoveTransition;
+import com.chess.engine.player.ai.BoardEvaluator;
+import com.chess.engine.player.ai.StandardBoardEvaluator;
 import com.chess.pgn.FenUtilities;
 import com.google.common.collect.Iterables;
 
@@ -75,11 +74,11 @@ public class TestBoard {
 
 		final Builder builder = new Builder();
 		// Black Layout
-		builder.setPiece(new King(Alliance.BLACK, 4, false, false));
-		builder.setPiece(new Pawn(Alliance.BLACK, 12));
+		builder.setPiece(new King(4, Alliance.BLACK, false, false));
+		builder.setPiece(new Pawn(12, Alliance.BLACK));
 		// White Layout
-		builder.setPiece(new Pawn(Alliance.WHITE, 52));
-		builder.setPiece(new King(Alliance.WHITE, 60, false, false));
+		builder.setPiece(new Pawn(52, Alliance.WHITE));
+		builder.setPiece(new King(60, Alliance.WHITE, false, false));
 		builder.setMoveMaker(Alliance.WHITE);
 		// Set the current player
 		final Board board = builder.build();
@@ -218,9 +217,9 @@ public class TestBoard {
 
 		final Board.Builder builder = new Board.Builder();
 		// BLACK LAYOUT
-		builder.setPiece(new King(Alliance.BLACK, 4, false, false));
+		builder.setPiece(new King(4, Alliance.BLACK, false, false));
 		// WHITE LAYOUT
-		builder.setPiece(new King(Alliance.WHITE, 60, false, false));
+		builder.setPiece(new King(60, Alliance.WHITE, false, false));
 		builder.setPiece(new Bishop(61, Alliance.WHITE));
 		// white to move
 		builder.setMoveMaker(Alliance.WHITE);
@@ -231,11 +230,10 @@ public class TestBoard {
 	private static int calculatedActivesFor(final Board board, final Alliance alliance) {
 		int count = 0;
 		for (final Tile t : board.getGameBoard()) {
-			if (t.isTileOccupied() && t.getPiece().getPieceAllegiance().equals(alliance)) {
+			if (t.isTileOccupied() && t.getPiece().getPieceAlliance().equals(alliance)) {
 				count++;
 			}
 		}
 		return count;
 	}
-
 }

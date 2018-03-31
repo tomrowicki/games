@@ -9,8 +9,8 @@ import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Move.MajorAttackMove;
 import com.chess.engine.board.Move.MajorMove;
-import com.chess.engine.classic.Alliance;
 import com.chess.engine.board.Tile;
+import com.chess.engine.classic.Alliance;
 import com.google.common.collect.ImmutableList;
 
 public class Queen extends Piece {
@@ -73,18 +73,18 @@ public class Queen extends Piece {
 		return Piece.PieceType.QUEEN.toString();
 	}
 
-	private static boolean isFirstColumnExclusion(final int currentPosition, final int candidateOffset) {
-		return BoardUtils.FIRST_COLUMN[currentPosition]
-				&& (candidateOffset == -9 || candidateOffset == -1 || candidateOffset == 7);
+	private static boolean isFirstColumnExclusion(final int currentPosition, final int candidatePosition) {
+		return BoardUtils.INSTANCE.FIRST_COLUMN.get(candidatePosition)
+				&& ((currentPosition == -9) || (currentPosition == -1) || (currentPosition == 7));
 	}
 
-	private static boolean isEighthColumnExclusion(final int currentPosition, final int candidateOffset) {
-		return BoardUtils.EIGHTH_COLUMN[currentPosition]
-				&& (candidateOffset == -7 || candidateOffset == 1 || candidateOffset == 9);
+	private static boolean isEighthColumnExclusion(final int currentPosition, final int candidatePosition) {
+		return BoardUtils.INSTANCE.EIGHTH_COLUMN.get(candidatePosition)
+				&& ((currentPosition == -7) || (currentPosition == 1) || (currentPosition == 9));
 	}
 
 	@Override
 	public Queen movePiece(Move move) {
-		return new Queen(move.getDesinationCoordinate(), move.getMovedPiece().getPieceAlliance());
+		return new Queen(move.getDestinationCoordinate(), move.getMovedPiece().getPieceAlliance());
 	}
 }

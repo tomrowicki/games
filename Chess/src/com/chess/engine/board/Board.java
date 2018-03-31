@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.chess.engine.board.Move.MoveFactory;
 import com.chess.engine.classic.Alliance;
 import com.chess.engine.pieces.Bishop;
 import com.chess.engine.pieces.King;
@@ -32,9 +33,11 @@ public class Board {
 
 	private final BlackPlayer blackPlayer;
 
-	private final Player currentPlater;
+	private final Player currentPlayer;
 
 	private final Pawn enPassantPawn;
+
+	private final Move transitionMove;
 
 	private Board(final Builder builder) {
 		this.gameBoard = createGameBoard(builder);
@@ -47,7 +50,8 @@ public class Board {
 
 		this.whitePlayer = new WhitePlayer(this, whiteStandardLegalMoves, blackStandardLegalMoves);
 		this.blackPlayer = new BlackPlayer(this, whiteStandardLegalMoves, blackStandardLegalMoves);
-		this.currentPlater = builder.nextMoveMaker.choosePlayer(this.whitePlayer(), this.blackPlayer);
+		this.currentPlayer = builder.nextMoveMaker.choosePlayer(this.whitePlayer(), this.blackPlayer);
+		this.transitionMove = builder.transitionMove != null ? builder.transitionMove : MoveFactory.getNullMove();
 	}
 
 	@Override
@@ -138,6 +142,10 @@ public class Board {
 		return builder.build();
 	}
 
+	public Move getTransitionMove() {
+		return this.transitionMove;
+	}
+
 	public static class Builder {
 
 		Map<Integer, Piece> boardConfig;
@@ -145,6 +153,8 @@ public class Board {
 		Alliance nextMoveMaker;
 
 		Pawn enPassantPawn;
+
+		Move transitionMove;
 
 		public Builder() {
 			this.boardConfig = new HashMap<>();
@@ -160,13 +170,18 @@ public class Board {
 			return this;
 		}
 
+		public Builder setMoveTransition(final Move transitionMove) {
+			this.transitionMove = transitionMove;
+			return this;
+		}
+
 		public Board build() {
 			return new Board(this);
 		}
 
-		public void setEnPassantPawn(Pawn movedPawn) {
-			// TODO Auto-generated method stub
-
+		public Builder setEnPassantPawn(final Pawn enPassantPawn) {
+			this.enPassantPawn = enPassantPawn;
+			return this;
 		}
 	}
 
@@ -176,6 +191,10 @@ public class Board {
 
 	public Collection<Piece> getWhitePieces() {
 		return this.whitePieces;
+	}
+
+	public List<Tile> getGameBoard() {
+		return this.gameBoard;
 	}
 
 	public Pawn getEnPassantPawn() {
@@ -191,7 +210,11 @@ public class Board {
 	}
 
 	public Player currentPlayer() {
-		return this.currentPlater;
+		return this.currentPlayer;
+	}
+
+	public Iterable<Piece> getAllPieces() {
+		return Iterables.unmodifiableIterable(Iterables.concat(this.whitePieces, this.blackPieces));
 	}
 
 	public Iterable<Move> getAllLegalMoves() {

@@ -65,6 +65,7 @@ public class Table extends Observable {
 
 	private BoardDirection boardDirection;
 
+	@SuppressWarnings("unused")
 	private Move computerMove;
 
 	private boolean highlightLegalMoves;
@@ -258,8 +259,7 @@ public class Table extends Observable {
 			try {
 				final Move bestMove = get();
 				Table.get().updateComputerMove(bestMove);
-				Table.get().updateGameBoard(
-						Table.get().getGameBoard().currentPlayer().makeMove(bestMove).getTransitionBoard());
+				Table.get().updateGameBoard(Table.get().getGameBoard().currentPlayer().makeMove(bestMove).getToBoard());
 				Table.get().getMoveLog().addMove(bestMove);
 				Table.get().getGameHistoryPanel().redo(Table.get().getGameBoard(), Table.get().getMoveLog());
 				Table.get().getTakenPiecesPanel().redo(Table.get().getMoveLog());
@@ -374,7 +374,7 @@ public class Table extends Observable {
 									destinationTile.getTileCoordinate());
 							final MoveTransition transition = chessBoard.currentPlayer().makeMove(move);
 							if (transition.getMoveStatus().isDone()) {
-								chessBoard = transition.getTransitionBoard();
+								chessBoard = transition.getToBoard();
 								moveLog.addMove(move);
 							}
 							sourceTile = null;
@@ -449,7 +449,7 @@ public class Table extends Observable {
 		private void highlightLegals(final Board board) {
 			if (highlightLegalMoves) {
 				for (final Move move : pieceLegalMoves(board)) {
-					if (move.getDesinationCoordinate() == this.tileId) {
+					if (move.getDestinationCoordinate() == this.tileId) {
 						try {
 							add(new JLabel(new ImageIcon(ImageIO.read(new File("art/misc/green_dot.png")))));
 						} catch (Exception e) {

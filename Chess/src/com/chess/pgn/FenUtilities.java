@@ -40,7 +40,7 @@ public class FenUtilities {
 	private static String calculateEnPassantSquare(final Board board) {
 		final Pawn enPassantPawn = board.getEnPassantPawn();
 		if (enPassantPawn != null) {
-			return BoardUtils.getPositionAtCoordinate(
+			return BoardUtils.INSTANCE.getPositionAtCoordinate(
 					enPassantPawn.getPiecePosition() + (8 * enPassantPawn.getPieceAlliance().getOppositeDirection()));
 		}
 		return "-";

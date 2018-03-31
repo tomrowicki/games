@@ -41,7 +41,7 @@ public abstract class Player {
 	protected static Collection<Move> calculateAttacksOnTile(int piecePosition, Collection<Move> moves) {
 		final List<Move> attackMoves = new ArrayList<>();
 		for (final Move move : moves) {
-			if (piecePosition == move.getDesinationCoordinate()) {
+			if (piecePosition == move.getDestinationCoordinate()) {
 				attackMoves.add(move);
 			}
 		}
@@ -98,16 +98,20 @@ public abstract class Player {
 
 	public MoveTransition makeMove(final Move move) {
 		if (!isMoveLegal(move)) {
-			return new MoveTransition(this.board, move, MoveStatus.ILLEGAL_MOVE);
+			return new MoveTransition(this.board, this.board, move, MoveStatus.ILLEGAL_MOVE);
 		}
-		final Board transitionBoard = move.execute();
+		final Board transitionedBoard = move.execute();
 		final Collection<Move> kingAttacks = Player.calculateAttacksOnTile(
-				transitionBoard.currentPlayer().getOpponent().getPlayerKing().getPiecePosition(),
-				transitionBoard.currentPlayer().getLegalMoves());
+				transitionedBoard.currentPlayer().getOpponent().getPlayerKing().getPiecePosition(),
+				transitionedBoard.currentPlayer().getLegalMoves());
 		if (!kingAttacks.isEmpty()) {
-			return new MoveTransition(this.board, move, MoveStatus.LEAVES_PLAYER_IN_CHECK);
+			return new MoveTransition(this.board, this.board, move, MoveStatus.LEAVES_PLAYER_IN_CHECK);
 		}
-		return new MoveTransition(transitionBoard, move, MoveStatus.DONE);
+		return new MoveTransition(this.board, transitionedBoard, move, MoveStatus.DONE);
+	}
+
+	public MoveTransition unMakeMove(final Move move) {
+		return new MoveTransition(this.board, move.undo(), move, MoveStatus.DONE);
 	}
 
 	public abstract Collection<Piece> getActivePieces();
