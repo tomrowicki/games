@@ -2,9 +2,9 @@ package com.chess.engine.pieces;
 
 import java.util.Collection;
 
+import com.chess.engine.Alliance;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.Move;
-import com.chess.engine.classic.Alliance;
 
 public abstract class Piece {
 
@@ -67,6 +67,8 @@ public abstract class Piece {
 	public boolean isFirstMove() {
 		return this.isFirstMove;
 	}
+
+	public abstract int locationBonus();
 
 	public abstract Collection<Move> calculateLegalMoves(final Board board);
 

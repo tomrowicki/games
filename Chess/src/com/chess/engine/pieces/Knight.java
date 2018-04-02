@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.chess.engine.Alliance;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Move.MajorAttackMove;
 import com.chess.engine.board.Move.MajorMove;
 import com.chess.engine.board.Tile;
-import com.chess.engine.classic.Alliance;
 import com.google.common.collect.ImmutableList;
 
 public class Knight extends Piece {
@@ -95,5 +95,10 @@ public class Knight extends Piece {
 	@Override
 	public Knight movePiece(Move move) {
 		return new Knight(move.getDestinationCoordinate(), move.getMovedPiece().getPieceAlliance());
+	}
+
+	@Override
+	public int locationBonus() {
+		return this.pieceAlliance.knightBonus(this.piecePosition);
 	}
 }

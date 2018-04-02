@@ -8,7 +8,7 @@ import com.chess.engine.board.Move;
 import com.chess.engine.board.Move.MoveFactory;
 import com.chess.engine.player.MoveTransition;
 
-public class MiniMax implements MoveStrategy {
+public final class MiniMax implements MoveStrategy {
 
 	private final BoardEvaluator evaluator;
 
@@ -34,6 +34,10 @@ public class MiniMax implements MoveStrategy {
 	}
 
 	@Override
+	public long getNumBoardsEvaluated() {
+		return this.boardsEvaluated;
+	}
+
 	public Move execute(final Board board) {
 		final long startTime = System.currentTimeMillis();
 		Move bestMove = MoveFactory.getNullMove();
@@ -134,11 +138,6 @@ public class MiniMax implements MoveStrategy {
 		return board.currentPlayer().isInCheckMate() || board.currentPlayer().isInStaleMate();
 	}
 
-	@Override
-	public long getNumBoardsEvaluated() {
-		return this.boardsEvaluated;
-	}
-
 	private static class FreqTableRow {
 
 		private final Move move;
@@ -165,4 +164,5 @@ public class MiniMax implements MoveStrategy {
 					+ this.count;
 		}
 	}
+
 }

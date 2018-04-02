@@ -4,32 +4,37 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.chess.engine.Alliance;
 import com.chess.engine.board.Board;
 import com.chess.engine.board.BoardUtils;
 import com.chess.engine.board.Move;
 import com.chess.engine.board.Move.PawnAttackMove;
-import com.chess.engine.board.Move.PawnEnPassantAttackMove;
+import com.chess.engine.board.Move.PawnEnPassantAttack;
 import com.chess.engine.board.Move.PawnJump;
 import com.chess.engine.board.Move.PawnMove;
 import com.chess.engine.board.Move.PawnPromotion;
-import com.chess.engine.classic.Alliance;
 import com.google.common.collect.ImmutableList;
 
-public class Pawn extends Piece {
+public final class Pawn extends Piece {
 
-	private static int[] CANDIDATE_MOVE_COORDINATES = {
+	private final static int[] CANDIDATE_MOVE_COORDINATES = {
 			8,
 			16,
 			7,
 			9
 	};
 
-	public Pawn(final int piecePosition, final Alliance pieceAlliance) {
-		super(PieceType.PAWN, piecePosition, pieceAlliance, true);
+	public Pawn(final int piecePosition, final Alliance allegiance) {
+		super(PieceType.PAWN, piecePosition, allegiance, true);
 	}
 
-	public Pawn(final Alliance pieceAlliance, final int piecePosition, final boolean isFirstMove) {
-		super(PieceType.PAWN, piecePosition, pieceAlliance, isFirstMove);
+	public Pawn(final int piecePosition, final Alliance alliance, final boolean isFirstMove) {
+		super(PieceType.PAWN, piecePosition, alliance, isFirstMove);
+	}
+
+	@Override
+	public int locationBonus() {
+		return this.pieceAlliance.pawnBonus(this.piecePosition);
 	}
 
 	@Override
@@ -92,8 +97,8 @@ public class Pawn extends Piece {
 						.getPiecePosition() == (this.piecePosition + (this.pieceAlliance.getOppositeDirection()))) {
 					final Piece pieceOnCandidate = board.getEnPassantPawn();
 					if (this.pieceAlliance != pieceOnCandidate.getPieceAlliance()) {
-						legalMoves.add(new PawnEnPassantAttackMove(board, this, candidateDestinationCoordinate,
-								pieceOnCandidate));
+						legalMoves.add(
+								new PawnEnPassantAttack(board, this, candidateDestinationCoordinate, pieceOnCandidate));
 
 					}
 				}
@@ -129,8 +134,8 @@ public class Pawn extends Piece {
 						.getPiecePosition() == (this.piecePosition - (this.pieceAlliance.getOppositeDirection()))) {
 					final Piece pieceOnCandidate = board.getEnPassantPawn();
 					if (this.pieceAlliance != pieceOnCandidate.getPieceAlliance()) {
-						legalMoves.add(new PawnEnPassantAttackMove(board, this, candidateDestinationCoordinate,
-								pieceOnCandidate));
+						legalMoves.add(
+								new PawnEnPassantAttack(board, this, candidateDestinationCoordinate, pieceOnCandidate));
 
 					}
 				}
@@ -141,15 +146,13 @@ public class Pawn extends Piece {
 
 	@Override
 	public String toString() {
-		return Piece.PieceType.PAWN.toString();
+		return this.pieceType.toString();
 	}
 
 	@Override
-	public Pawn movePiece(Move move) {
-		return new Pawn(move.getDestinationCoordinate(), move.getMovedPiece().getPieceAlliance());
+	public Pawn movePiece(final Move move) {
+		return PieceUtils.INSTANCE.getMovedPawn(move.getMovedPiece().getPieceAlliance(),
+				move.getDestinationCoordinate());
 	}
 
-	public Piece getPromotionPiece() {
-		return new Queen(this.piecePosition, this.pieceAlliance, false);
-	}
 }

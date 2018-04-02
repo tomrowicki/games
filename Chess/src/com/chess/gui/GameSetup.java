@@ -16,7 +16,7 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 
-import com.chess.engine.classic.Alliance;
+import com.chess.engine.Alliance;
 import com.chess.engine.player.Player;
 import com.chess.gui.Table.PlayerType;
 
